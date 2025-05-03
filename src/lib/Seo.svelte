@@ -7,11 +7,13 @@
 		description,
 		keywords = [],
 		author,
+		canonical,
 		follow = true,
 		language = 'en',
 		og,
 		x,
-		jsonLd
+		jsonLd,
+		custom
 	} = metatag;
 
 	const getJsonLd = () => {
@@ -47,7 +49,7 @@
 
 <svelte:head>
 	<title>{title}</title>
-	<link rel="canonical" href={page.url.href} />
+	<link rel="canonical" href={canonical || page.url.href} />
 	<meta name="language" content={language} />
 	<meta name="description" content={description} />
 
@@ -61,6 +63,12 @@
 	<meta name="robots" content={follow ? 'index,follow' : 'noindex,nofollow'} />
 	<meta name="url" content={page.url.href} />
 
+	{#each custom ?? [] as tag}
+		{#if tag.content}
+			<meta {...tag.name ? { name: tag.name } : { property: tag.property }} content={tag.content} />
+		{/if}
+	{/each}
+
 	<meta property="og:title" content={title} />
 	<meta property="og:site_name" content={og.siteName} />
 	<meta property="og:description" content={description} />
@@ -71,51 +79,57 @@
 		<meta property="fb:app_id" content={og.fbAppId} />
 	{/if}
 
-	{#if og.image.url}
-		<meta property="og:image" content={og.image.url} />
-	{/if}
-	{#if og.image.secureUrl}
-		<meta property="og:image:secure_url" content={og.image.secureUrl} />
-	{/if}
-	{#if og.image.type}
-		<meta property="og:image:type" content={og.image.type} />
-	{/if}
-	{#if og.image.width}
-		<meta property="og:image:width" content={og.image.width} />
-	{/if}
-	{#if og.image.height}
-		<meta property="og:image:height" content={og.image.height} />
-	{/if}
-	{#if og.image.alt}
-		<meta property="og:image:alt" content={og.image.alt} />
-	{/if}
+	{#each og.image as image}
+		{#if image.url}
+			<meta property="og:image" content={image.url} />
+		{/if}
+		{#if image.secureUrl}
+			<meta property="og:image:secure_url" content={image.secureUrl} />
+		{/if}
+		{#if image.type}
+			<meta property="og:image:type" content={image.type} />
+		{/if}
+		{#if image.width}
+			<meta property="og:image:width" content={image.width} />
+		{/if}
+		{#if image.height}
+			<meta property="og:image:height" content={image.height} />
+		{/if}
+		{#if image.alt}
+			<meta property="og:image:alt" content={image.alt} />
+		{/if}
+	{/each}
 
-	{#if og.video?.url}
-		<meta property="og:video" content={og.video.url} />
-		<meta property="og:video:url" content={og.video.url} />
-	{/if}
-	{#if og.video?.secureUrl}
-		<meta property="og:video:secure_url" content={og.video.secureUrl} />
-	{/if}
-	{#if og.video?.type}
-		<meta property="og:video:type" content={og.video.type} />
-	{/if}
-	{#if og.video?.width}
-		<meta property="og:video:width" content={og.video.width} />
-	{/if}
-	{#if og.video?.height}
-		<meta property="og:video:height" content={og.video.height} />
-	{/if}
+	{#each og.video ?? [] as video}
+		{#if video.url}
+			<meta property="og:video" content={video.url} />
+			<meta property="og:video:url" content={video.url} />
+		{/if}
+		{#if video.secureUrl}
+			<meta property="og:video:secure_url" content={video.secureUrl} />
+		{/if}
+		{#if video.type}
+			<meta property="og:video:type" content={video.type} />
+		{/if}
+		{#if video.width}
+			<meta property="og:video:width" content={video.width} />
+		{/if}
+		{#if video.height}
+			<meta property="og:video:height" content={video.height} />
+		{/if}
+	{/each}
 
-	{#if og.audio?.url}
-		<meta property="og:audio" content={og.audio.url} />
-	{/if}
-	{#if og.audio?.secureUrl}
-		<meta property="og:audio:secure_url" content={og.audio.secureUrl} />
-	{/if}
-	{#if og.audio?.type}
-		<meta property="og:audio:type" content={og.audio.type} />
-	{/if}
+	{#each og.audio ?? [] as audio}
+		{#if audio.url}
+			<meta property="og:audio" content={audio.url} />
+		{/if}
+		{#if audio.secureUrl}
+			<meta property="og:audio:secure_url" content={audio.secureUrl} />
+		{/if}
+		{#if audio.type}
+			<meta property="og:audio:type" content={audio.type} />
+		{/if}
+	{/each}
 
 	<meta name="twitter:description" content={description} />
 	<meta name="twitter:title" content={title} />
@@ -134,24 +148,30 @@
 	{#if x?.card}
 		<meta name="twitter:card" content={x.card} />
 	{/if}
-	{#if x?.image?.url}
-		<meta name="twitter:image" content={x.image.url} />
-	{/if}
-	{#if x?.image?.alt}
-		<meta name="twitter:image:alt" content={x.image.alt} />
-	{/if}
-	{#if x?.player?.url}
-		<meta name="twitter:player" content={x.player.url} />
-	{/if}
-	{#if x?.player?.width}
-		<meta name="twitter:player:width" content={x.player.width} />
-	{/if}
-	{#if x?.player?.height}
-		<meta name="twitter:player:height" content={x.player.height} />
-	{/if}
-	{#if x?.player?.stream}
-		<meta name="twitter:player:stream" content={x.player.stream} />
-	{/if}
+
+	{#each x?.image ?? [] as image}
+		{#if image.url}
+			<meta name="twitter:image" content={image.url} />
+		{/if}
+		{#if image.alt}
+			<meta name="twitter:image:alt" content={image.alt} />
+		{/if}
+	{/each}
+
+	{#each x?.player ?? [] as player}
+		{#if player.url}
+			<meta name="twitter:player" content={player.url} />
+		{/if}
+		{#if player.width}
+			<meta name="twitter:player:width" content={player.width} />
+		{/if}
+		{#if player.height}
+			<meta name="twitter:player:height" content={player.height} />
+		{/if}
+		{#if player.stream}
+			<meta name="twitter:player:stream" content={player.stream} />
+		{/if}
+	{/each}
 
 	{#if jsonLd && jsonLd.image && jsonLd.author && jsonLd.publisher}
 		{@html `<script type="application/ld+json">${getJsonLd()}</script>`}

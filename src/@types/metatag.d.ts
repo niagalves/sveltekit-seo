@@ -14,6 +14,7 @@ type Metatag = {
 		author?: string;
 		follow?: boolean;
 		language?: string;
+		canonical?: string;
 		jsonLd?: {
 			image?: Omit<OgProps, 'secureUrl' | 'type'>;
 			author?: {
@@ -28,12 +29,17 @@ type Metatag = {
 			fbAppId?: string;
 			siteName: string;
 			type: string;
-			image: {
+			image: ({
 				alt?: string;
-			} & OgProps;
-			video?: OgProps;
-			audio?: Omit<OgProps, 'width' | 'height'>;
+			} & OgProps)[];
+			video?: OgProps[];
+			audio?: Omit<OgProps, 'width' | 'height'>[];
 		};
+		custom?: {
+			name?: string;
+			property?: string;
+			content: string;
+		}[];
 		x?: {
 			siteId?: string;
 			creator?: string;
@@ -43,13 +49,13 @@ type Metatag = {
 			image?: {
 				url?: string;
 				alt?: string;
-			};
+			}[];
 			player?: {
 				url?: string;
 				width?: string;
 				height?: string;
 				stream?: string;
-			};
+			}[];
 		};
 	};
 };
