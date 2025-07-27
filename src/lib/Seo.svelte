@@ -12,39 +12,11 @@
 		language = 'en',
 		og,
 		x,
-		jsonLd,
+		ldJson = {},
 		custom
 	} = metatag;
 
-	const getJsonLd = () => {
-		return JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'WebPage',
-			name: title,
-			description: description,
-			url: page.url.href,
-			image: {
-				'@type': 'ImageObject',
-				url: jsonLd?.image?.url,
-				width: jsonLd?.image?.width,
-				height: jsonLd?.image?.height
-			},
-			author: {
-				'@type': 'Organization',
-				name: jsonLd?.author?.name
-			},
-			publisher: {
-				'@type': 'Organization',
-				name: jsonLd?.publisher?.name,
-				logo: {
-					'@type': 'ImageObject',
-					url: jsonLd?.publisher?.logo?.url,
-					width: jsonLd?.publisher?.logo?.width,
-					height: jsonLd?.publisher?.logo?.height
-				}
-			}
-		});
-	};
+	const getLdJson = () => JSON.stringify(ldJson);
 </script>
 
 <svelte:head>
@@ -173,7 +145,7 @@
 		{/if}
 	{/each}
 
-	{#if jsonLd && jsonLd.image && jsonLd.author && jsonLd.publisher}
-		{@html `<script type="application/ld+json">${getJsonLd()}</script>`}
+	{#if ldJson}
+		{@html `<script type="application/ld+json">${getLdJson()}</script>`}
 	{/if}
 </svelte:head>

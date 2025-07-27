@@ -15,16 +15,7 @@ type Metatag = {
 		follow?: boolean;
 		language?: string;
 		canonical?: string;
-		jsonLd?: {
-			image?: Omit<OgProps, 'secureUrl' | 'type'>;
-			author?: {
-				name?: string;
-			};
-			publisher?: {
-				name?: string;
-				logo?: Omit<OgProps, 'secureUrl' | 'type'>;
-			};
-		};
+		ldJson?: unknown;
 		og: {
 			fbAppId?: string;
 			siteName: string;

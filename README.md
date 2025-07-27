@@ -72,7 +72,7 @@ Pass a `metatag` object as a prop:
 				stream: 'https://example.com/stream.m3u8'
 			}]
 		},
-		jsonLd: {
+		ldJson: {
 			image: {
 				url: 'https://example.com/image.jpg',
 				width: '1280',

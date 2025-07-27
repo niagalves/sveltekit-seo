@@ -60,7 +60,7 @@
 				}
 			]
 		},
-		jsonLd: {
+		ldJson: {
 			image: {
 				url: 'https://example.com/image.jpg',
 				width: '1280',
